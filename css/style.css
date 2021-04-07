@@ -2,7 +2,7 @@
 *{
  	box-sizing: border-box;
 }
-
+html{height: -webkit-fill-available;}
 body {
 	background: #BE3F3E;
 	/* font-family: 'Roboto Condensed', sans-serif; */
@@ -11,8 +11,10 @@ body {
 	text-transform: uppercase;
 	color:#3B3B3C;
 	height:100vh;
+	min-height: -webkit-fill-available;
 	margin:0;
 	overflow: hidden;
+	padding-top: 1px;
 }
 
 h1{
@@ -55,8 +57,10 @@ a{
 	overflow-y: scroll;
 	height:80vh;
 	margin-top:10vh;
+	margin-bottom: 10vh;
 	scroll-snap-type: mandatory;
-	scroll-snap-points-y: repeat(80vh);
+	-webkit-scroll-snap-points-y: repeat(80vh);
+	-webkit-scroll-snap-points-y: repeat(80vh);
 	scroll-snap-type: y mandatory;
 }
 .ty-page{
@@ -405,9 +409,6 @@ MEDIA QUERIES
 /* tablet */
 
 @media (max-width: 970px) {
-	.page{
-		height: 100vh;
-	}
 
 	.page-grid {
 		grid-template-columns: 10% auto 10%;
@@ -455,6 +456,9 @@ MEDIA QUERIES
 /* mobile */
 
 @media (max-width: 767px){
+	h1{
+		margin: 30px 5px;
+	}
 	.hide-md{
 		display: none;
 	}
@@ -489,16 +493,17 @@ MEDIA QUERIES
 	.page{
 		min-height: 80vh;
 		height: inherit;
-		justify-content: start;
+		/* justify-content: start; */
 	}
 	#pageTwo{
 		height: initial;
 	}
 	.page-grid{
-		grid-template-rows: auto;
+		grid-template-rows: 1fr auto;
 	}
 	.snack-wrapper{
-		grid-template-rows: 5% 25% 5% auto;
+		grid-template-rows:0 auto 5% auto;
+		height: initial;
 	}
 	.topteeth, .bottomteeth{z-index: 9 !important;}
 	
@@ -506,15 +511,19 @@ MEDIA QUERIES
 @media (max-width: 500px){
 	h1,
 	.message-ty .title-sticker{font-size: 50px;}
-	.dots{right: 5px;}
-	.header{top: 20px;}
-	.footer{bottom: 20px;}
+	.dots{right: 0;}
+	.dot{
+		width: 20px;
+		height: 20px;
+		margin: 20px 10px;
+	}
+	.header{top: 1vh;}
+	.footer{bottom: 1vh;}
 }
 @media (max-width: 350px){
 	h1,
 	.message-ty .title-sticker{font-size: 40px;}
 	.subtitle{font-size: 24px;}
-	.footer{bottom: 10px;}
 }
 /* safari, wide/high res */
 
@@ -598,3 +607,10 @@ MEDIA QUERIES
 }
 
 
+/* Avoid Chrome to see Safari hack */
+@supports (-webkit-touch-callout: none) {
+	body {
+	  /* The hack for Safari */
+	  height: -webkit-fill-available;
+	}
+  }
