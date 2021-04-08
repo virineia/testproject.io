@@ -73,8 +73,8 @@ function setBkg(){
 function setTeeth(){
   topSpacer = "-" + $('.topteeth').height();
   $('.topteeth').css("margin-top", topSpacer+"px");
-  bottomSpacer = "-" + $('.bottomteeth').height();
-  //$('.bottomteeth').css("margin-top", topSpacer+"px");
+  bottomSpacer = "-" + $('.bottomteeth').height() - 2;
+  $('.bottomteeth').css("bottom", bottomSpacer+"px");
   console.log("teeth loaded. Top spacer is: " + topSpacer);
 }
 
@@ -149,7 +149,7 @@ function setSnacks(){
     //var chosenSnack = snackArray[Math.floor(Math.random()*snackArray.length)];
     //$(this).attr("src","images/snacks/"+chosenSnack);
     
-      var itemImageSnacks = listSnacks[Math.floor(Math.random()*listSnacks.length)];
+      var itemImageSnacks = images.snacks[Math.floor(Math.random()*images.snacks.length)];
       $(this).attr("src",itemImageSnacks);
     
   });
@@ -161,14 +161,10 @@ function setSnacks(){
   		}
   		time += 100;
   		chartOrder += 1;
-      $(this).on('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function(){
+      /*$(this).on('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function(){
         $(this).addClass("v-visibility");
         $(this).removeAttr('style');
-      });
-      
-      /*if( $(this).is(':animated') ) {
-        $(this).removeAttr('style');
-      }*/
+      });*/
   });
   
 }
@@ -179,10 +175,10 @@ function setLogo(){
   setTimeout(function(){ 
   
     var itemImage;
-  itemImage = listLogo[Math.floor(Math.random() * listLogo.length)];
+  itemImage = images.logos[Math.floor(Math.random() * images.logos.length)];
   
   $('.logo').attr("src", itemImage);
-  console.log(itemImage)
+  
 
   }, 100);
   console.log("logo loaded");
@@ -224,7 +220,7 @@ function openTeeth(thisObj){
   
 
     var itemImageResults;
-  itemImageResults=listResults[Math.floor(Math.random()*listResults.length)];
+  itemImageResults=images.results[Math.floor(Math.random()*images.results.length)];
   $('.snack-item', thisObj).attr("src", itemImageResults);
   $('.snack-item', thisObj).addClass("result-item");
   $('.snack-item', thisObj).parent().addClass("no-pointer");
@@ -245,7 +241,7 @@ function openTeeth(thisObj){
 function closeTeeth(thisObj, callback){
   var topAmount = -topSpacer-4;
   var moveTopY = "translateY("+ topAmount+"px)";
-  var bottomAmount = bottomSpacer+2;
+  var bottomAmount = bottomSpacer;
   var moveBottomY = "translateY("+ bottomAmount+"px)";
   $('.topteeth', thisObj).css("transform", moveTopY);
   $('.bottomteeth', thisObj).css("transform", moveBottomY);
@@ -254,6 +250,42 @@ function closeTeeth(thisObj, callback){
   $('.bottomteeth',thisObj).css("animation-name", "bottomTeethAnimation");
   callback(thisObj);*/
 };
+
+/*function actionSnack(thisObj){
+  setTimeout(function(){ 
+    $(thisObj).addClass("hide-md").removeClass("show").next().addClass("show");
+    if( snackActive == 6){
+      $(".snack-grid").hide();
+      $(".message-ty").addClass("show-message").show();
+  }
+  }, 2000);
+}*/
+
+function zZz(thisObj, countClick){
+  var snackActive = $(".snack.active").length;
+  if(windowWidth >= tabletView){
+    countClick = 8;
+  }else if(windowWidth <= tabletView && windowWidth >= mobileView){
+    countClick = 6;
+  }else{
+    countClick = 4;
+  }
+  console.log(snackActive)
+  console.log(countClick)
+}
+
+// function showMessage(thisObj){
+//   var snackActive = $(".snack.active").length;
+//   if (windowWidth <= tabletView && windowWidth > mobileView) {
+//     setTimeout(function(){ 
+//       $(thisObj).addClass("hide-md").removeClass("show").next().addClass("show");
+//       if( snackActive == 6){
+//         $(".snack-grid").hide();
+//         $(".message-ty").addClass("show-message").show();
+//     }
+//     }, 2000);
+//   }
+// }
 
 function tabletAction(thisObj){
   var snackActive = $(".snack.active").length;
@@ -298,12 +330,15 @@ function desktopAction(thisObj){
 }
 
 $(".snack").on('click', function(){
+  var countClick = 0
+  
   $('.topteeth', $(this)).css("visibility", "visible");
   $('.bottomteeth', $(this)).css("visibility", "visible");
   $(this).addClass('active');
   desktopAction($(this));
   mobileAction($(this));
   tabletAction($(this));
+
   closeTeeth($(this), openTeeth);
   
 
@@ -327,7 +362,7 @@ and in the direction of the scroll.
   dotPlacement = (currentScrollTop / ($(window).height()*0.8))*maxMoveSpace;
 
 /* move the dot the amount that was scrolled in the correct direction */
-  if(dotPlacement <= maxMoveSpace){
+  if(dotPlacement <= maxMoveSpace || dotPlacement <= 0){
     aMoveDot.css({'top': dotPlacement});
   }
 

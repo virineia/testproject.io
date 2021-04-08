@@ -1,19 +1,23 @@
 
-var itemImageSnacks;
-var itemImageResults;
-var listLogo = [];
-var listSnacks = [];
-var listResults = [];
-var pathFolder = window.location.pathname
-var dirLogos = pathFolder + "images/logos/";
-var dirResults = pathFolder + "images/results/";
-var dirSnacks = pathFolder + "images/snacks/";
-var fileExtension = ".svg"
-
-
-
-  
-  
+var config = {
+  pathFolder : window.location.pathname,
+  totalImages: 16,
+  extension  : ".svg",
+  dir : {
+    logos   : "images/logos/",
+    snacks  : "images/snacks/",
+    results : "images/results/"
+  }
+}
+var images = {};
+for(type in config.dir){
+    if(getCookie(type) !== null){
+      images[type]= JSON.parse(decodeURI(getCookie(type)));
+    }else{
+     parseImages(type);
+    }
+}
+console.log(images)
   function setCookie(name,value,minutes) {
     var expires = "";
     if (minutes) {
@@ -37,66 +41,24 @@ var fileExtension = ".svg"
     
     document.cookie = name +'=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
   }
-  
-
-if(getCookie('cookieListLogo', 'cookieListSnacks', 'cookieListResults') !== null){
-  listLogo = JSON.parse(getCookie('cookieListLogo'));
-  listSnacks = JSON.parse(getCookie('cookieListSnacks'));
-  listResults = JSON.parse(getCookie('cookieListResults'));  
-  
-}else{
-  for (let i = 1; i <= 16; i++){
-    listLogo.push(dirLogos + i + fileExtension);
-    listSnacks.push(dirSnacks + i + fileExtension);
-    listResults.push(dirResults + i + fileExtension);
+  function parseImages(type){
+    images[type] = [];
+    for(let i = 1; i < config.totalImages; i++){
+        var path = config.pathFolder + config.dir[type] + i + config.extension;
+            //images[type].push(path)
+        jQuery.ajax({
+          url: path,
+          type: 'HEAD',
+          async : false,
+          error: function() {   
+          },
+          success: function() {
+            images[type].push(path)
+          }
+        });    
+      }
+    setCookie(type,encodeURI(JSON.stringify(images[type])),60);
+    console.log(encodeURI(JSON.stringify(images[type])))
   }
-  listLogo.forEach((url) => {
-    $.ajax({
-      url: url,
-      type: 'HEAD',
-      error: function() {			
-        listLogo.splice($.inArray(url, listLogo), 1);
-        setCookie("cookieListLogo", JSON.stringify(listLogo), 7)
-      },
-      success: function() {
-              
-      }
-    });
-  });
-  
-  
 
-  listSnacks.forEach((url) => {
-    $.ajax({
-      url: url,
-      type: 'HEAD',
-      error: function() {			
-        listSnacks.splice($.inArray(url, listSnacks), 1);
-        setCookie("cookieListSnacks", JSON.stringify(listSnacks), 7)
-      },
-      success: function() {
-              
-      }
-    });
-
-  });
-
-
-  listResults.forEach((url) => {
-    $.ajax({
-      url: url,
-      type: 'HEAD',
-      error: function() {			
-        listResults.splice($.inArray(url, listResults), 1);
-        setCookie("cookieListResults", JSON.stringify(listResults), 7)
-      },
-      success: function() {
-              
-      }
-    });
-  
-  });
-  
-    
-}
 
