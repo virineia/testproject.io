@@ -507,20 +507,16 @@ MEDIA QUERIES
 		/*scroll-snap-type: y proximity;*/
 	}
 	.page{
-		/*min-height: 80vh;*/
-		height: inherit;
-		/* justify-content: start; */
+		height: 100%;
 	}
 	#pageTwo{
 		height: initial;
 	}
 	.page-grid{
-		/*grid-template-rows: 1fr auto;*/
-		grid-template-rows: auto;
+		grid-template-rows: 1fr auto;
 	}
 	.snack-wrapper{
-		/*grid-template-rows:0 auto 5% auto;*/
-		grid-template-rows:0 auto 0 auto;
+		grid-template-rows:auto;
 		height: initial;
 	}
 	.topteeth, .bottomteeth{z-index: 9 !important;}
@@ -529,6 +525,7 @@ MEDIA QUERIES
 @media (max-width: 500px){
 	h1,
 	.message-ty .title-sticker{font-size: 50px;}
+	h1{margin: 0 0 20px;}
 	.dots{right: 0;}
 	.dot{
 		width: 20px;
