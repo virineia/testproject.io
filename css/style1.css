@@ -2,7 +2,6 @@
 *{
  	box-sizing: border-box;
 }
-html{height: -webkit-fill-available;}
 body {
 	background: #BE3F3E;
 	/* font-family: 'Roboto Condensed', sans-serif; */
@@ -11,7 +10,7 @@ body {
 	text-transform: uppercase;
 	color:#3B3B3C;
 	height:100vh;
-	min-height: -webkit-fill-available;
+	/* min-height: -webkit-fill-available; */
 	margin:0;
 	overflow: hidden;
 	padding-top: 10vh;
@@ -457,8 +456,37 @@ MEDIA QUERIES
 /* mobile */
 
 @media (max-width: 767px){
+	#control-height {
+		height: 100vh;
+		width: 0;
+		position: absolute;
+	}
+	html{height: 100vh;}
+	body{
+		padding: 0;
+		margin: 0;
+		height: 100vh;
+		width: 100%;
+	}
+	.main{
+		position: fixed;
+		height: 100vh;
+		width: 100%;
+		padding-top: 10vh;
+		padding-bottom: 10vh;
+	}
+	.page-container{
+		/* top: 10vh; */
+		height: 80vh;
+		left: 0;
+		right: 0;
+		/* bottom: 10vh; */
+	}
+	#pageTwo{
+		height: fit-content;
+	}
 	h1{
-		margin: 30px 5px;
+		margin: 0;
 	}
 	.hide-md{
 		display: none;
@@ -487,25 +515,11 @@ MEDIA QUERIES
 		display: block !important;
 		
 	}
-	.page-container{}
-	.page{
-		min-height: 80vh;
-		height: inherit;
-		/* justify-content: start; */
-	}
-	#pageTwo{
-		height: initial;
-	}
-	.page-grid{
-		/* grid-template-rows: auto; */
-	}
-	.snack-wrapper{
-		grid-template-rows:auto;
-	}
 	.topteeth, .bottomteeth{z-index: 9 !important;}
 	
 }
 @media (max-width: 500px){
+	.page-grid{grid-template-rows:1fr auto}
 	h1,
 	.message-ty .title-sticker{font-size: 50px;}
 	.dots{right: 0;}
@@ -604,10 +618,3 @@ MEDIA QUERIES
 }
 
 
-/* Avoid Chrome to see Safari hack */
-@supports (-webkit-touch-callout: none) {
-	body {
-	  /* The hack for Safari */
-	  height: -webkit-fill-available;
-	}
-  }
