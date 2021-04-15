@@ -319,7 +319,7 @@ function desktopAction(thisObj){
 //$(this).hasClass("active") ? $(this).off('click') : 
 $(".snack").on('click', function(){
   
-  
+  if(!$(this).hasClass("active")){
   $('.topteeth', $(this)).css("visibility", "visible");
   $('.bottomteeth', $(this)).css("visibility", "visible");
   $(this).addClass('active');
@@ -328,7 +328,7 @@ $(".snack").on('click', function(){
   tabletAction($(this));
 
   closeTeeth($(this), openTeeth);
-  console.log("click");
+  console.log("click");}
   
 });
 
