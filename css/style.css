@@ -1,4 +1,5 @@
 @import url(../fonts/stylesheet.css);
+@import url(../fonts/bison/stylesheet.css);
 *{
  	box-sizing: border-box;
 }
@@ -16,11 +17,10 @@ body {
 }
 
 h1{
-	font-style: italic;
-	font-size: 60px;
+	font-size: 80px;
 	text-align:center;
 	margin:0px;
-	font-family: 'bebas_neueregular';
+	font-family: 'bisonbold_itallic';
 }
 
 h2{
@@ -30,6 +30,7 @@ h2{
 }
 /*social card text*/
 h3{
+	font-family: 'bisonbold';
 	font-size:34px;
 	text-align:left;
 	margin:0;
@@ -56,9 +57,9 @@ a{
 	height:80vh;
 	margin-top:10vh;
 	margin-bottom: 10vh;
-	scroll-snap-type: mandatory;
+	/* scroll-snap-type: mandatory;
 	-webkit-scroll-snap-points-y: repeat(80vh);
-	-webkit-scroll-snap-points-y: repeat(80vh);
+	-webkit-scroll-snap-points-y: repeat(80vh); */
 	scroll-snap-type: y mandatory;
 }
 .ty-page{
@@ -74,7 +75,8 @@ a{
 	flex-direction: column;
 	justify-content: center;
 	scroll-snap-align: start;
-	height:80vh;
+	min-height:100%;
+	height: auto;
 	position:relative;
 }
 
@@ -102,14 +104,15 @@ a{
 .snack-wrapper{
 	grid-column:2/3;
 	display: grid;
-	grid-template-rows: 5% auto 5% auto;
+	/*grid-template-rows: 5% auto 5% auto;*/
 	height: 100%;
 }
 
 .message{
-	grid-row:2/3;
+	/*grid-row:2/3;*/
 	justify-content: center;
 	align-self: center;
+	margin: 0 0 4%;
 }
 
 .ty-page .message{
@@ -118,11 +121,13 @@ a{
 
 
 .snack-grid{
-	grid-row:4/5;
+	/*grid-row:4/5;*/
 	display: grid;
 	grid-template-columns: repeat(4, 180px);
 	grid-template-rows:repeat(2, 180px);
-	grid-gap:20px;
+	/*grid-gap:20px;*/
+	grid-column-gap: 78px;
+    	grid-row-gap: 40px;
 	justify-content: center;
 }
 .snack{
@@ -371,7 +376,7 @@ a{
 	font-size: 60px;
 	margin-bottom: 25px;
 	font-weight: 400;
-	font-family: 'bebas_neueregular';
+	font-family: 'bisondemibold';
 }
 .message-ty .title-sticker:before{
 	background-color: #3b3b3c;
@@ -390,6 +395,7 @@ a{
 	text-align: center;
 	font-size: 26px;
 	text-transform: none;
+	font-family: 'Open Sans', sans-serif;
 }
 .subtitle a{
 	color: #3B3B3C;
@@ -405,17 +411,22 @@ MEDIA QUERIES
 
 
 /* tablet */
-
+@media (max-width: 1200px) {
+	.snack-grid {grid-gap: 30px;}
+	.dots{right: 15px;}
+}
 @media (max-width: 970px) {
 
 	.page-grid {
 		grid-template-columns: 10% auto 10%;
-		grid-template-rows: 1fr 360px 1fr;
+		/* grid-template-rows: 1fr 20px 20px 1fr; */
 		align-items: center;
+		margin-bottom: 30px;
 		height:100%;
 	}
 	h1{
-		margin:30px;
+		margin:30px 0;
+		font-size: 76px;
 	}
 	#pageTwo h1{
 		margin:10px;
@@ -449,6 +460,23 @@ MEDIA QUERIES
 	.big img{
 		height:80px;
 	}
+	.dots{height: 59px;}
+	.dot{
+		height: 6px;
+		width: 6px;
+		background-color: #38383f;
+		margin: 0 10px;
+	}
+	.second-screen{
+		position: absolute;
+		bottom: 0;
+	}
+	#filled-dot{
+		height: 45px;
+		width: 6px;
+		border-radius: 3px;
+		margin: 0 10px;
+	}
 }
 
 /* mobile */
@@ -468,30 +496,34 @@ MEDIA QUERIES
 		padding-top: 10vh;
 		padding-bottom: 10vh;
 	}
-	h1{
-		margin: 30px 5px;
-	}
+	h1{font-size: 50px;margin: 30px 5px;text-align: left;max-width: 270px;margin-left: auto;margin-right: auto;}
 	.page-container{
 		height: 80vh;
 		margin: 0;
+		scroll-snap-type:y proximity;
 	}
-	.hide-md{
+	.hide-md,
+	.hide-md-active{
 		display: none;
 	}
 	.snack-grid{
-		grid-template-columns: repeat( auto-fit, minmax(250px, 1fr) );
+		grid-template-columns: repeat( auto-fit, minmax(270px, 1fr) );
 		display: block;
 		position: relative;
-		height: 180px;
-		width: 180px;
+		height: 270px;
+		width: 270px;
 		margin-left: auto;
 		margin-right: auto;
 	}
 	.snack{
-		
+		opacity: 1;
 		position: absolute;
-		height: 180px;
-		width: 180px;
+		height: 270px;
+		width: 270px;
+	}
+	.snack:first-child{
+		opacity: 0;
+		animation: popIn 600ms ease 100ms 1 normal forwards
 	}
 	.snack + .snack,
 	.snack.v-visibility + .snack.v-visibility{
@@ -500,17 +532,19 @@ MEDIA QUERIES
 	.snack.show,
 	.snack.v-visibility.show{
 		display: block !important;
-		
 	}
-	.page-container{
-		scroll-snap-align: end;
-		/*scroll-snap-type: y proximity;*/
+	.snack.show .snack-item,
+	.snack.v-visibility.show .snack-item{
+		opacity: 0;
+		animation: popIn 600ms ease 100ms 1 normal forwards
 	}
 	.page{
-		height: 100%;
+		min-height: 100%;
 	}
 	#pageTwo{
 		height: initial;
+		justify-content: start;
+		scroll-snap-align: start end;
 	}
 	.page-grid{
 		grid-template-rows: 1fr auto;
@@ -520,20 +554,20 @@ MEDIA QUERIES
 		height: initial;
 	}
 	.topteeth, .bottomteeth{z-index: 9 !important;}
-	
+	.topteeth, .bottomteeth{
+		width:270px;
+	}
 }
 @media (max-width: 500px){
 	h1,
 	.message-ty .title-sticker{font-size: 50px;}
-	h1{margin: 0 0 20px;}
+	h1{margin: 0 auto}
 	.dots{right: 0;}
-	.dot{
-		width: 20px;
-		height: 20px;
-		margin: 20px 10px;
-	}
+}
+@media (max-width: 500px), (max-height: 730px){
 	.header{top: 1vh;}
 	.footer{bottom: 1vh;}
+	#pageOne{margin-bottom: 30px;}
 }
 @media (max-width: 350px){
 	h1,
@@ -555,12 +589,12 @@ MEDIA QUERIES
 
 	.snack-grid {
 		display: grid;
-		grid-template-columns: repeat(4, 240px);
-		grid-template-rows:repeat(2, 240px);
+		grid-template-columns: repeat(4, 180px);
+		grid-template-rows:repeat(2, 180px);
 	}
 
 	.topteeth, .bottomteeth{
-		width:232px;
+		width:180px;
 	}
 
 	h4{

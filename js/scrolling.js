@@ -138,10 +138,17 @@ function loadLogoArray(callback){
 
 */
 
-function setSnacks(){
+function setSnacks(messVisible){
   var time=100;
   var chartOrder=1;
-  
+  var messVisible = "none"
+  if(!$(".message-ty").css('display') == messVisible){
+    $(".message-ty").addClass("show-message").show();
+    $(".snack-grid").hide();
+  }else{
+    $(".message-ty").removeClass("show-message").hide();
+    $(".snack-grid").show();
+  }  
   setTimeout(function(){ 
   $('.snack-item').each(function(){
     //var chosenSnack = snackArray.splice(Math.floor(Math.random()*snackArray.length), 1);
@@ -153,17 +160,20 @@ function setSnacks(){
     
   });
 }, 100);
+
   $('.snack').each(function(){
+    if (windowWidth >= mobileView) {
   		$(this).attr("style",browserPrefix+"animation: popIn 600ms ease "+time+"ms 1 normal forwards;");
   		if(chartOrder==4){
   			time=50;
   		}
   		time += 100;
   		chartOrder += 1;
-      /*$(this).on('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function(){
+      $(this).on('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function(){
         $(this).addClass("v-visibility");
         $(this).removeAttr('style');
-      });*/
+      });
+    }
   });
   
 }
@@ -213,6 +223,8 @@ $(document).on('click', 'a[href^="#"]', function(e){
   }
 });
 
+
+
 function openTeeth(thisObj){
   /*var chosenResult=resultArray[Math.floor(Math.random()*resultArray.length)];
   $('.snack-item', thisObj).attr("src","images/results/"+chosenResult);*/
@@ -228,9 +240,8 @@ function openTeeth(thisObj){
   
 
   $('.topteeth', thisObj).css("transform", "translateY(0px)");
-  $('.bottomteeth', thisObj).css("transform", "translateY(0px)");
-  
-  $(thisObj).off('click');
+  $('.bottomteeth', thisObj).css("transform", "translateY(0px)");  
+  //$(thisObj).off('click');
   $('.topteeth', thisObj).css("visibility", "hidden");
   $('.bottomteeth', thisObj).css("visibility", "hidden");
   
@@ -250,51 +261,30 @@ function closeTeeth(thisObj, callback){
   callback(thisObj);*/
 };
 
-/*function actionSnack(thisObj){
-  setTimeout(function(){ 
-    $(thisObj).addClass("hide-md").removeClass("show").next().addClass("show");
-    if( snackActive == 6){
-      $(".snack-grid").hide();
-      $(".message-ty").addClass("show-message").show();
-  }
-  }, 2000);
-}*/
-
-/*function zZz(thisObj, countClick){
-  var snackActive = $(".snack.active").length;
-  if(windowWidth >= tabletView){
-    countClick = 8;
-  }else if(windowWidth <= tabletView && windowWidth >= mobileView){
-    countClick = 6;
+function resetImgList(){
+  //var itemImageSnacks = images.snacks[Math.floor(Math.random()*images.snacks.length)];
+  $('.snack').each(function(){    
+    $(".result-item", this).removeClass("result-item").addClass("snack-item").attr("src","");
+  });
+  if(!$(".message-ty").is(":visible") && $(".snack-grid").is(":visible")){
+    $(".message-ty").addClass("show-message").show();
+    $(".snack-grid").hide();
   }else{
-    countClick = 4;
+    $(".message-ty").removeClass("show-message").hide();
+    $(".snack-grid").show();
   }
-  console.log(snackActive)
-  console.log(countClick)
-}*/
+  $(".snack").removeClass("v-visibility active hide-md-active show");
+}
+function showHideBlocks(){
+  
+}
 
-// function showMessage(thisObj){
-//   var snackActive = $(".snack.active").length;
-//   if (windowWidth <= tabletView && windowWidth > mobileView) {
-//     setTimeout(function(){ 
-//       $(thisObj).addClass("hide-md").removeClass("show").next().addClass("show");
-//       if( snackActive == 6){
-//         $(".snack-grid").hide();
-//         $(".message-ty").addClass("show-message").show();
-//     }
-//     }, 2000);
-//   }
-// }
-
-function tabletAction(thisObj){
+function tabletAction(){
   var snackActive = $(".snack.active").length;
   if (windowWidth <= tabletView && windowWidth > mobileView) {
-    
     setTimeout(function(){ 
-      $(thisObj).addClass("hide-md").removeClass("show").next().addClass("show");
       if( snackActive == 6){
-        $(".snack-grid").hide();
-        $(".message-ty").addClass("show-message").show();
+        resetImgList();
     }
     }, 2000);
   }
@@ -303,13 +293,13 @@ function tabletAction(thisObj){
 function mobileAction(thisObj){
   var snackActive = $(".snack.active").length;
   if (windowWidth <= mobileView) {
+    
     setTimeout(function(){ 
-      $(thisObj).addClass("hide-md").removeClass("show").next().addClass("show");
+      $(thisObj).addClass("hide-md-active").removeClass("show").next().addClass("show");  
       if( snackActive == 4){
-        $(".snack-grid").hide();
-        $(".message-ty").addClass("show-message").show();
+        resetImgList();
     }
-    }, 2000);
+    }, 1100);
   }  
 }
 function desktopAction(thisObj){
@@ -320,16 +310,15 @@ function desktopAction(thisObj){
       $(thisObj).addClass("show");
      
         if( snackActive == $(".snack").length){
-          $(".snack-grid").hide();
-          $(".message-ty").addClass("show-message").show();   
+          resetImgList();
       }
       
     }, 2000);
   }  
 }
-
+//$(this).hasClass("active") ? $(this).off('click') : 
 $(".snack").on('click', function(){
-  var countClick = 0
+  
   
   $('.topteeth', $(this)).css("visibility", "visible");
   $('.bottomteeth', $(this)).css("visibility", "visible");
@@ -339,9 +328,7 @@ $(".snack").on('click', function(){
   tabletAction($(this));
 
   closeTeeth($(this), openTeeth);
-  
-
-  
+  console.log("click");
   
 });
 
@@ -362,6 +349,10 @@ and in the direction of the scroll.
 
 /* move the dot the amount that was scrolled in the correct direction */
   if(dotPlacement <= maxMoveSpace || dotPlacement <= 0){
+    if (windowWidth <= tabletView) {
+      maxMoveSpace = 14
+      aMoveDot.css({'top': dotPlacement});
+    }
     aMoveDot.css({'top': dotPlacement});
   }
 
