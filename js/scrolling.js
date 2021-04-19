@@ -289,17 +289,31 @@ function tabletAction(){
     }, 2000);
   }
 }
-
+// if (windowWidth <= mobileView) {
+//     function scrollMobile(){
+//       $('#fix-mobile').on('scroll', function() {
+//         var hT = $('#pageTwo').offset().top - 80,
+//             hH = $('#pageTwo').outerHeight(),
+//             hOT = $('#pageOne').offset().top - 80,
+//             hO = $('#pageOne').outerHeight(),
+//             wH = $('#fix-mobile').height(),
+//             wS = $(this).scrollTop();
+//       });      
+//     }
+//     if(wS >= 0){
+//       $('#fix-mobile').animate({scrollTop: hT}, 800);
+//       $(this).off('scroll')
+//     }
+// } 
 function mobileAction(thisObj){
   var snackActive = $(".snack.active").length;
   if (windowWidth <= mobileView) {
-    
     setTimeout(function(){ 
       $(thisObj).addClass("hide-md-active").removeClass("show").next().addClass("show");  
       if( snackActive == 4){
         resetImgList();
     }
-    }, 1100);
+    }, 2000);
   }  
 }
 function desktopAction(thisObj){
@@ -328,7 +342,7 @@ $(".snack").on('click', function(){
   tabletAction($(this));
 
   closeTeeth($(this), openTeeth);
-  console.log("click");}
+  }
   
 });
 
@@ -358,7 +372,7 @@ and in the direction of the scroll.
 
 /* if social cards aren't visible, add fade in animation */
 var socialVisibility = $('.socialCard').css("opacity");
-console.log(socialVisibility);
+//console.log(socialVisibility);
 if(socialVisibility=="0"){
 	var time=500;
 	$('.socialCard').each(function(){

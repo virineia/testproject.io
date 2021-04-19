@@ -402,7 +402,7 @@ a{
 	cursor: pointer;
 	border-bottom: 1px solid #3B3B3C;
 }
-
+.wrapper{min-height: 400px;}
 /****************
 
 MEDIA QUERIES 
@@ -419,7 +419,6 @@ MEDIA QUERIES
 
 	.page-grid {
 		grid-template-columns: 10% auto 10%;
-		/* grid-template-rows: 1fr 20px 20px 1fr; */
 		align-items: center;
 		margin-bottom: 30px;
 		height:100%;
@@ -500,7 +499,6 @@ MEDIA QUERIES
 	.page-container{
 		height: 80vh;
 		margin: 0;
-		scroll-snap-type:y proximity;
 	}
 	.hide-md,
 	.hide-md-active{
@@ -540,22 +538,39 @@ MEDIA QUERIES
 	}
 	.page{
 		min-height: 100%;
+		position: relative;
 	}
 	#pageTwo{
-		height: initial;
+		height: 100%;
 		justify-content: start;
-		scroll-snap-align: start end;
+		overflow-y: auto;
+		overflow-x: hidden;
 	}
 	.page-grid{
 		grid-template-rows: 1fr auto;
+		position: absolute;
+		left: 50%;
+		top: 50%;
+		transform: translate(-50%,-50%);
+		-webkit-transform: translate(-50%,-50%);
+		width: 100%;
+		height: initial;
 	}
 	.snack-wrapper{
 		grid-template-rows:auto;
-		height: initial;
+		height: initial;		
 	}
+	.wrapper{min-height: 275px;position: relative;}
 	.topteeth, .bottomteeth{z-index: 9 !important;}
 	.topteeth, .bottomteeth{
 		width:270px;
+	}
+	.dots{display: none;}
+	.wrapper .snack-grid,.wrapper .message-ty{
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
 	}
 }
 @media (max-width: 500px){
@@ -563,6 +578,7 @@ MEDIA QUERIES
 	.message-ty .title-sticker{font-size: 50px;}
 	h1{margin: 0 auto}
 	.dots{right: 0;}
+	
 }
 @media (max-width: 500px), (max-height: 730px){
 	.header{top: 1vh;}
@@ -573,6 +589,9 @@ MEDIA QUERIES
 	h1,
 	.message-ty .title-sticker{font-size: 40px;}
 	.subtitle{font-size: 24px;}
+	.page-grid{grid-template-columns: 10% 255px 10%;}
+	.snack-grid, .snack, .topteeth, .bottomteeth{width: 100%}
+	.wrapper{min-height: 280px;}
 }
 /* safari, wide/high res */
 
