@@ -144,10 +144,12 @@ a{
 	-webkit-transform: translateY(0);
 	opacity: 1 !important;
 }
+
+/*
 .snack.v-visibility:hover{
 	transform: translateY(-10px);
     -webkit-transform: translateY(-10px);
-}
+}*/
 
 .snack.v-visibility.active:hover{
 	transform: translateY(0);
