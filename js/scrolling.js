@@ -8,14 +8,9 @@ var resultArray = ["burp.svg", "chomp.svg", "like.svg", "mmmm.svg", "nibble.svg"
 var logoArray = ["fist.svg", "fuck.svg", "hi.svg", "rock.svg", "shoot.svg"];
 var chosenColor="";
 var topSpacer=0;
-var bottomSpacer=0;
 var aMoveDot = $('.moveDot');
 var aPageContainer = $('.page-container');
 var aFilledDot = $('#filled-dot');
-var windowWidth = $(window).width();
-const tabletView = 970;
-const mobileView = 767;
-
 
 /* -- TEST LATER --
 const express = require('express');
@@ -72,8 +67,6 @@ function setBkg(){
 function setTeeth(){
   topSpacer = "-" + $('.topteeth').height();
   $('.topteeth').css("margin-top", topSpacer+"px");
-  bottomSpacer = "-" + $('.bottomteeth').height() - 2;
-  $('.bottomteeth').css("bottom", bottomSpacer+"px");
   console.log("teeth loaded. Top spacer is: " + topSpacer);
 }
 
@@ -138,58 +131,27 @@ function loadLogoArray(callback){
 
 */
 
-function setSnacks(messVisible){
+function setSnacks(){
   var time=100;
   var chartOrder=1;
-  var messVisible = "none"
-  if(!$(".message-ty").css('display') == messVisible){
-    $(".message-ty").addClass("show-message").show();
-    $(".snack-grid").hide();
-  }else{
-    $(".message-ty").removeClass("show-message").hide();
-    $(".snack-grid").show();
-  }  
-  setTimeout(function(){ 
   $('.snack-item').each(function(){
     //var chosenSnack = snackArray.splice(Math.floor(Math.random()*snackArray.length), 1);
-    //var chosenSnack = snackArray[Math.floor(Math.random()*snackArray.length)];
-    //$(this).attr("src","images/snacks/"+chosenSnack);
-    
-      var itemImageSnacks = images.snacks[Math.floor(Math.random()*images.snacks.length)];
-      $(this).attr("src",itemImageSnacks);
-    
+    var chosenSnack = snackArray[Math.floor(Math.random()*snackArray.length)];
+    $(this).attr("src","images/snacks/"+chosenSnack);
   });
-}, 100);
-
   $('.snack').each(function(){
-    if (windowWidth >= mobileView) {
   		$(this).attr("style",browserPrefix+"animation: popIn 600ms ease "+time+"ms 1 normal forwards;");
   		if(chartOrder==4){
   			time=50;
   		}
   		time += 100;
   		chartOrder += 1;
-      $(this).on('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function(){
-        $(this).addClass("v-visibility");
-        $(this).removeAttr('style');
-      });
-    }
   });
-  
 }
 
 function setLogo(){
-  //var chosenLogo = logoArray[Math.floor(Math.random()*logoArray.length)];
-  //$('.logo').attr("src", "images/logos/"+chosenLogo);
-  setTimeout(function(){ 
-  
-    var itemImage;
-  itemImage = images.logos[Math.floor(Math.random() * images.logos.length)];
-  
-  $('.logo').attr("src", itemImage);
-  
-
-  }, 100);
+  var chosenLogo = logoArray[Math.floor(Math.random()*logoArray.length)];
+  $('.logo').attr("src", "images/logos/"+chosenLogo);
   console.log("logo loaded");
 }
 
@@ -201,7 +163,6 @@ function init(){
   setLogo(); // not needed once loadLogoArray is fixed
   setBkg();
   setTimeout(setTeeth, 500); // call once the teeth img is loaded on the page
-  
 }
 
 $(document).on('click', 'a[href^="#"]', function(e){
@@ -223,35 +184,22 @@ $(document).on('click', 'a[href^="#"]', function(e){
   }
 });
 
-
-
 function openTeeth(thisObj){
-  /*var chosenResult=resultArray[Math.floor(Math.random()*resultArray.length)];
-  $('.snack-item', thisObj).attr("src","images/results/"+chosenResult);*/
-  
-
-    var itemImageResults;
-  itemImageResults=images.results[Math.floor(Math.random()*images.results.length)];
-  $('.snack-item', thisObj).attr("src", itemImageResults);
+  var chosenResult=resultArray[Math.floor(Math.random()*resultArray.length)];
+  $('.snack-item', thisObj).attr("src","images/results/"+chosenResult);
   $('.snack-item', thisObj).addClass("result-item");
-  $('.snack-item', thisObj).parent().addClass("no-pointer");
   $('.snack-item', thisObj).removeClass("snack-item");
-  
-  
-
   $('.topteeth', thisObj).css("transform", "translateY(0px)");
-  $('.bottomteeth', thisObj).css("transform", "translateY(0px)");  
-  //$(thisObj).off('click');
+  $('.bottomteeth', thisObj).css("transform", "translateY(0px)");
+  $(thisObj).off('click');
   $('.topteeth', thisObj).css("visibility", "hidden");
   $('.bottomteeth', thisObj).css("visibility", "hidden");
-  
 }
-
 
 function closeTeeth(thisObj, callback){
   var topAmount = -topSpacer-4;
   var moveTopY = "translateY("+ topAmount+"px)";
-  var bottomAmount = bottomSpacer;
+  var bottomAmount = -($('.bottomteeth').height()-2);
   var moveBottomY = "translateY("+ bottomAmount+"px)";
   $('.topteeth', thisObj).css("transform", moveTopY);
   $('.bottomteeth', thisObj).css("transform", moveBottomY);
@@ -261,91 +209,11 @@ function closeTeeth(thisObj, callback){
   callback(thisObj);*/
 };
 
-function resetImgList(){
-  //var itemImageSnacks = images.snacks[Math.floor(Math.random()*images.snacks.length)];
-  $('.snack').each(function(){    
-    $(".result-item", this).removeClass("result-item").addClass("snack-item").attr("src","");
-  });
-  if(!$(".message-ty").is(":visible") && $(".snack-grid").is(":visible")){
-    $(".message-ty").addClass("show-message").show();
-    $(".snack-grid").hide();
-  }else{
-    $(".message-ty").removeClass("show-message").hide();
-    $(".snack-grid").show();
-  }
-  $(".snack").removeClass("v-visibility active hide-md-active show");
-}
-function showHideBlocks(){
-  
-}
-
-function tabletAction(){
-  var snackActive = $(".snack.active").length;
-  if (windowWidth <= tabletView && windowWidth > mobileView) {
-    setTimeout(function(){ 
-      if( snackActive == 6){
-        resetImgList();
-    }
-    }, 2000);
-  }
-}
-// if (windowWidth <= mobileView) {
-//     function scrollMobile(){
-//       $('#fix-mobile').on('scroll', function() {
-//         var hT = $('#pageTwo').offset().top - 80,
-//             hH = $('#pageTwo').outerHeight(),
-//             hOT = $('#pageOne').offset().top - 80,
-//             hO = $('#pageOne').outerHeight(),
-//             wH = $('#fix-mobile').height(),
-//             wS = $(this).scrollTop();
-//       });      
-//     }
-//     if(wS >= 0){
-//       $('#fix-mobile').animate({scrollTop: hT}, 800);
-//       $(this).off('scroll')
-//     }
-// } 
-function mobileAction(thisObj){
-  var snackActive = $(".snack.active").length;
-  if (windowWidth <= mobileView) {
-    setTimeout(function(){ 
-      $(thisObj).addClass("hide-md-active").removeClass("show").next().addClass("show");  
-      if( snackActive == 4){
-        resetImgList();
-    }
-    }, 2000);
-  }  
-}
-function desktopAction(thisObj){
-  var snackActive = $(".snack.active").length;
-  if (windowWidth >= tabletView) {
-    setTimeout(function(){ 
-            
-      $(thisObj).addClass("show");
-     
-        if( snackActive == $(".snack").length){
-          resetImgList();
-      }
-      
-    }, 2000);
-  }  
-}
-//$(this).hasClass("active") ? $(this).off('click') : 
 $(".snack").on('click', function(){
-  
-  if(!$(this).hasClass("active")){
   $('.topteeth', $(this)).css("visibility", "visible");
   $('.bottomteeth', $(this)).css("visibility", "visible");
-  $(this).addClass('active');
-  desktopAction($(this));
-  mobileAction($(this));
-  tabletAction($(this));
-
   closeTeeth($(this), openTeeth);
-  }
-  
 });
-
 
 
 aPageContainer.scroll(function(){
@@ -362,17 +230,11 @@ and in the direction of the scroll.
   dotPlacement = (currentScrollTop / ($(window).height()*0.8))*maxMoveSpace;
 
 /* move the dot the amount that was scrolled in the correct direction */
-  if(dotPlacement <= maxMoveSpace || dotPlacement <= 0){
-    if (windowWidth <= tabletView) {
-      maxMoveSpace = 14
-      aMoveDot.css({'top': dotPlacement});
-    }
-    aMoveDot.css({'top': dotPlacement});
-  }
+  aMoveDot.css({'top': dotPlacement});
 
 /* if social cards aren't visible, add fade in animation */
 var socialVisibility = $('.socialCard').css("opacity");
-//console.log(socialVisibility);
+console.log(socialVisibility);
 if(socialVisibility=="0"){
 	var time=500;
 	$('.socialCard').each(function(){
